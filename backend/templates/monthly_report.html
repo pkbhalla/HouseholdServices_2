@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Activity Report - {{ month }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .header h1 {
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+        .summary-box {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+        }
+        .summary-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            width: 45%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+        .status-pending {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .status-accepted {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .status-closed {
+            color: #6c757d;
+            font-weight: bold;
+        }
+        .status-rejected {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NestCare</h1>
+        <h2>Monthly Activity Report - {{ month }}</h2>
+    </div>
+
+    <div class="summary-box">
+        <h2>Hello, {{ customer.name }}!</h2>
+        <p>Here's a summary of your service request activity for {{ month }}.</p>
+    </div>
+
+    <div class="summary-stats">
+        <div class="stat-card">
+            <h3>Total Requests</h3>
+            <p>{{ total_requests }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Pending</h3>
+            <p>{{ pending_requests }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Accepted</h3>
+            <p>{{ accepted_requests }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Completed</h3>
+            <p>{{ closed_requests }}</p>
+        </div>
+    </div>
+
+    <h2>Service Request Details</h2>
+    {% if requests %}
+    <table>
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Professional</th>
+                <th>Date Created</th>
+                <th>Date Closed</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>{{ request.service.name if request.service else 'N/A' }}</td>
+                <td>{{ request.professional.name if request.professional else 'N/A' }}</td>
+                <td>{{ request.date_created }}</td>
+                <td>{{ request.date_closed if request.date_closed else 'N/A' }}</td>
+                <td class="status-{{ request.status.lower() }}">{{ request.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No service requests found for this period.</p>
+    {% endif %}
+
+    <div class="footer">
+        <p>This is an automated report from NestCare. Please do not reply to this email.</p>
+        <p>If you have any questions, please contact our support team.</p>
+        <p>&copy;NestCare. All rights reserved.</p>
+    </div>
+</body>
+</html>
